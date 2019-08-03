@@ -1,6 +1,7 @@
-import {get, post, put, remove} from "./toDo.js"
+import * as facade from "./facade.js"
 import {view} from "./view.js"
 import {Tasks} from "./model.js"
+import {events} from "./events.js"
 
 const makeReactiveProxy = obj => new Proxy(obj, {
   set
@@ -9,17 +10,14 @@ const makeReactiveProxy = obj => new Proxy(obj, {
 const makeServerProxy = (obj) =>  new Proxy(obj, {
   get(target, prop){
     if(typeof target[prop] === 'function') {
-      return async (taskArg, payload) => {
-        const task = target.returnTask(taskArg) || taskArg;
-        task.taskId = task._id;
-        const actions = {
-          deleteTask: remove,
-          addTasks: post,
-          editTask: put
+      return async (arg, payload) => {
+        if(!facade[prop]) return target[prop];
+        const item = target.returnTask(arg) || arg;
+        if(typeof item === 'object') {
+          item.taskId = item._id;
         }
-        await actions[prop](task, payload);
-
-        const serverTasks = await get();
+        await facade[prop](item, payload);
+        const serverTasks = await facade.get();
         target.replaceTasks(...serverTasks);
       }
     }
@@ -40,7 +38,17 @@ function set(target, prop, value) {
   return value;
 }
 
+function addEventListeners(htmlNode, tasks) {
+  events.forEach((eventName) =>
+    htmlNode.addEventListener(eventName, ({detail}) => {
+      tasks[eventName](...[detail].flat())
+
+    }))
+}
+
 export async function init() {
-  const serverTasks = await get()
+  const parentNode = document.getElementById('main-container');
+  addEventListeners(parentNode, serverProxy);
+  const serverTasks = await facade.get()
   reactiveTasks.replaceTasks(...serverTasks);
 }

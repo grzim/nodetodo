@@ -1,9 +1,7 @@
 import {createTaskNode} from "./createTaskNode.js"
+import {addTaskDispatch, filterTasksDispatch} from "./viewDispatchers.js";
 
-const addTask = tasks => () => {
-  const newtask = document.getElementById('newtask');
-  tasks.addTasks({name: newtask.value, isCompleted: false})
-}
+
 
 const clearHTML = (container, containerCopy, parent) => {
   document.getElementById('incompletetasks').innerHTML = ''
@@ -14,11 +12,23 @@ const clearHTML = (container, containerCopy, parent) => {
 
 }
 
-const actionAdd = (tasks) => {
-  const toDo = document.getElementById('todo');
-  const add = addTask(tasks);
-  toDo.addEventListener('click', add) ;
-  return (() => toDo.removeEventListener('click' ,add));
+const actionAdd = function(parent){
+
+  const toDo =   document.getElementById('todo')
+  const newtask = document.getElementById('newtask')
+  const addTaskOfName = () => {
+    addTaskDispatch(newtask.value)(toDo)
+  }
+  toDo.addEventListener('click', addTaskOfName) ;
+  return (() => toDo.removeEventListener('click' ,addTaskOfName));
+}
+
+
+const getFiltered = (container) => {
+  const filterNamesInput = document.getElementById('filter-names');
+  const getFilteredCallback = filterTasksDispatch(filterNamesInput.value).bind(null, filterNamesInput);
+  filterNamesInput.addEventListener('keyup', getFilteredCallback) ;
+  return (() => filterNamesInput.removeEventListener('keyup' ,getFilteredCallback));
 }
 
 export const view = () => {
@@ -27,8 +37,8 @@ export const view = () => {
   const containerCopy = container.cloneNode(true);
   const parent = container.parentNode;
   return (tasks) => {
-    tasksCleaner.forEach(cleaner => cleaner(), );
+    tasksCleaner.forEach(cleaner => cleaner());
     clearHTML(container, containerCopy, parent);
-    tasksCleaner = [...tasks.all.map(createTaskNode(tasks)), actionAdd(tasks)];
+    tasksCleaner = [...tasks.all.map(createTaskNode(tasks)), actionAdd(parent), getFiltered(parent)];
   }
 }

@@ -17,6 +17,10 @@ export class Tasks {
     return this.all.filter(t => t.name === name)[0];
   }
 
+  filterTasks(phrase) {
+    return this.all.filter(t => t.name.includes(phrase));
+  }
+
   getDetails({name}) {
     return this.all.filter(t => t.name === name)[0];
   }
