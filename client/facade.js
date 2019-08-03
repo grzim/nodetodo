@@ -1,6 +1,6 @@
 import {debounce} from "../commons/commons.mjs"
+import {serverUrl} from "../commons/config.mjs"
 
-const serverUrl = 'http://localhost:3000/tasks/';
 
 async function get() {
   const response = await fetch(serverUrl);

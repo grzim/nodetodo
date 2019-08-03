@@ -1,7 +1,16 @@
-
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
+const DescriptionSchema = new Schema({
+  description: {
+    type: String,
+  },
+  tasksNames: {
+    type: [{
+      type: String
+    }]
+  }
+})
 
 const TaskSchema = new Schema({
   name: {
@@ -19,3 +28,4 @@ const TaskSchema = new Schema({
 });
 
 export default mongoose.model('Tasks', TaskSchema);
+export const descriptionModel = mongoose.model('Description', DescriptionSchema);

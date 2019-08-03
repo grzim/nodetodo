@@ -1,11 +1,14 @@
 import {debounce} from "../commons/commons.mjs"
 
 import mongoose from 'mongoose';
-
+import { emit } from './index.mjs'
 const Task = mongoose.model('Tasks');
+const Description = mongoose.model('Description');
+
 const debounced = debounce()
 
 const exports = {};
+
 
 exports.list_all_tasks = function(req, res) {
   Task.find({}, function(err, task) {
@@ -14,7 +17,6 @@ exports.list_all_tasks = function(req, res) {
     res.json(task);
   });
 };
-
 
 exports.list_tasks_including = async function({params: {phrase}}, res) {
   await debounced(2000, null, (_, phrase, res) =>{
@@ -35,6 +37,7 @@ exports.create_a_task = function(req, res) {
       res.send(err);
     res.json(task);
   });
+  emit.namesUpdated();
 };
 
 
@@ -44,6 +47,7 @@ exports.read_a_task = function(req, res) {
         res.send(err);
       res.json(task);
     })
+  emit.namesUpdated();
 
 };
 
@@ -54,6 +58,7 @@ exports.update_a_task = function(req, res) {
         res.send(err);
       res.json(task);
   })
+  emit.namesUpdated();
 };
 
 
@@ -65,6 +70,7 @@ exports.delete_a_task = function(req, res) {
       res.send(err);
     res.json({ message: 'Task successfully deleted' });
   });
+  emit.namesUpdated();
 };
 
 export default exports;

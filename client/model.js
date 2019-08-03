@@ -3,6 +3,10 @@ export class Tasks {
     this.all = tasks
   }
 
+  addDescription(descr) {
+    this.description = descr;
+  }
+
   addTasks(...tasks) {
     this.all = [...this.all, ...tasks.filter(task => !this.all.map(t => t.name).includes(task.name))];
     return tasks;

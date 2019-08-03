@@ -1,5 +1,6 @@
 import todoList from './toDoController';
-
+import express from "express";
+const router = express.Router();
 export default function(app) {
 
   // todoList Routes
@@ -17,4 +18,7 @@ export default function(app) {
     .get(todoList.read_a_task)
     .put(todoList.update_a_task)
     .delete(todoList.delete_a_task);
+
+  app.use("/ws", router);
+
 };

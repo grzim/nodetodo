@@ -1,4 +1,4 @@
-import {addTasksEvent, deleteTaskEvent, editTaskEvent, filterTasksEvent} from "./events.js"
+import {addTasksEvent, deleteTaskEvent, editTaskEvent, filterTasksEvent, addDescription} from "./events.js"
 
 export const addTaskDispatch = function (name) {
   return function (node) {
@@ -21,5 +21,11 @@ export const deleteTaskDispatch = function (tasks, listItem, name) {
 export const editTaskDispatch = function (originalName, data) {
   return function (node) {
     node.dispatchEvent(editTaskEvent([{name: originalName}, data]))
+  }
+}
+
+export const addDescriptionDispatch = function (value) {
+  return function (node) {
+    node.dispatchEvent(addDescription(value))
   }
 }
