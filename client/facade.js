@@ -1,3 +1,5 @@
+import {debounce} from "../commons/commons.mjs"
+
 const serverUrl = 'http://localhost:3000/tasks/';
 
 async function get() {
@@ -5,9 +7,10 @@ async function get() {
   return await response.json() || [];
 }
 
+const debounced = debounce();
 async function filterTasks(phrase) {
-  const response = await fetch(serverUrl + 'includes/' + phrase);
-  return await response.json() || [];
+  const callback = (phrase) => fetch(serverUrl + 'includes/' + phrase).then(response => response.json() || [])
+  return await debounced(2000, phrase, callback);
 }
 
 async function addTasks(data) {

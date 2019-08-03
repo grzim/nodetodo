@@ -1,24 +1,24 @@
-const express = require('express'),
-  app = express(),
-  port = process.env.PORT || 3000,
-  mongoose = require('mongoose'),
-  Task = require('./toDoModels'), //created model loading here
-  bodyParser = require('body-parser');
+import express from 'express';
+import mongoose from 'mongoose';
+import Task from './toDoModels';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import routes from './toDoRoutes';
+
+const app = express(),
+  port = process.env.PORT || 3000;
 
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/Tododb');
+  mongoose.connect('mongodb://localhost/Tododb');
 
-const cors = require('cors');
 
 app.use(cors())
-app.use(require('body-parser').json({ type : '*/*' }));
+app.use(bodyParser.json({ type : '*/*' }));
 // use it before all route definitions
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-
-const routes = require('./toDoRoutes'); //importing route
 routes(app); //register the route
 
 app.listen(port);

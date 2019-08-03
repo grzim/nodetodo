@@ -26,7 +26,7 @@ const actionAdd = function(parent){
 
 const getFiltered = (container) => {
   const filterNamesInput = document.getElementById('filter-names');
-  const getFilteredCallback = filterTasksDispatch(filterNamesInput.value).bind(null, filterNamesInput);
+  const getFilteredCallback = () => filterTasksDispatch(filterNamesInput.value)(filterNamesInput);
   filterNamesInput.addEventListener('keyup', getFilteredCallback) ;
   return (() => filterNamesInput.removeEventListener('keyup' ,getFilteredCallback));
 }

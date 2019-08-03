@@ -16,9 +16,15 @@ const makeServerProxy = (obj) =>  new Proxy(obj, {
         if(typeof item === 'object') {
           item.taskId = item._id;
         }
-        await facade[prop](item, payload);
-        const serverTasks = await facade.get();
-        target.replaceTasks(...serverTasks);
+        if(prop === 'filterTasks') {
+          const serverTasks = await facade[prop](item, payload);
+          if(serverTasks) target.replaceTasks(...serverTasks);
+        }
+        else {
+          await facade[prop](item, payload);
+          const serverTasks = await facade.get();
+          target.replaceTasks(...serverTasks);
+        }
       }
     }
     else return target[prop]
