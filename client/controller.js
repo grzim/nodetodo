@@ -10,7 +10,7 @@ const makeServerProxy = (obj) =>  new Proxy(obj, {
   get(target, prop){
     if(typeof target[prop] === 'function') {
       return async (taskArg, payload) => {
-        const task = target.getTask(taskArg) || taskArg;
+        const task = target.returnTask(taskArg) || taskArg;
         task.taskId = task._id;
         const actions = {
           deleteTask: remove,

@@ -5,20 +5,35 @@
     <link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8">
 </head>
 <body>
-<div class="container" id="container">
-    <p>
-        <label for="newtask">Add Item</label>
-        <input id="newtask" type="text">
-        <button id="todo">Add</button>
-    </p>
+<div class="main-container">
+    <div class="left-side">
+        <p>
+            <label for="filter-names">Filter names</label>
+            <input id="filter-names">
+            <div id="filtered"></div>
+        </p>
+    </div>
+    <div class="wrapper">
+        <div class="container" id="container">
 
-    <h3>Todo</h3>
-    <ul id="incompletetasks">
-    </ul>
+            <p>
+                <label for="newtask">Add Item</label>
+                <input id="newtask" type="text">
+                <button id="todo">Add</button>
+            </p>
 
-    <h3>Completed</h3>
-    <ul id="completedtasks">
-    </ul>
+            <h3>Todo</h3>
+            <ul id="incompletetasks">
+            </ul>
+
+            <h3>Completed</h3>
+            <ul id="completedtasks">
+            </ul>
+        </div>
+    </div>
+    <div class="right-side">
+
+    </div>
 </div>
 </body>
 <script src="script.js" type="module"></script>

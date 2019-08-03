@@ -4,10 +4,14 @@ body {
     color: #333;
     font-family: Lato, sans-serif;
 }
+.main-container {
+    display: flex;
+    justify-content: space-around;
+}
 .container {
     display: block;
     width: 400px;
-    margin: 100px auto 0;
+   /* margin: 100px auto 0; */
 }
 ul {
     margin: 0;

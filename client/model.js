@@ -13,7 +13,11 @@ export class Tasks {
     return tasks;
   }
 
-  getTask({name}) {
+  returnTask({name}) {
+    return this.all.filter(t => t.name === name)[0];
+  }
+
+  getDetails({name}) {
     return this.all.filter(t => t.name === name)[0];
   }
 
